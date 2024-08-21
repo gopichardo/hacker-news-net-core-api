@@ -1,17 +1,18 @@
 using Domain.Entities;
-using Domain.Interfaces.Services;
 using Domain.Interfaces.UseCases;
+using Infrastructure.Services;
 
 namespace Application.UseCases
 {
-    public class GetBestStoriesUseCase(IStoryService _storyService) : IGetBestStoriesUseCase
+    public class GetBestStoriesUseCase(IHackerNewsService _hackerNewsService) : IGetBestStoriesUseCase
     {
-        private readonly IStoryService storyService = _storyService;
+        private readonly IHackerNewsService hackerNewsService = _hackerNewsService;
 
-        public Task<List<Story>> Execute(int n)
+        public async Task<List<Story>> Execute(int n)
         {
-            var stories = storyService.GetBestStoriesAsync(n);
-            return stories;
+            var bestStories = await hackerNewsService.GetBestStoriesAsync(n);
+
+            return bestStories;
         }
     }
 }

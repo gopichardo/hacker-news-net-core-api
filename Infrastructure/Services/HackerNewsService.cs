@@ -1,24 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Interfaces.Clients;
-using Domain.Interfaces.Services;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
-namespace Application.Services
+namespace Infrastructure.Services
 {
-    public class StoryService(IHackerNewsClient _HackerNewsClient, IMemoryCache _cache, IOptions<AppSettings> _options) : IStoryService
+    public class HackerNewsService(IHackerNewsClient _hackerNewsClient, IMemoryCache _cache, IOptions<AppSettings> _options) : IHackerNewsService
     {
-        private readonly IHackerNewsClient hackerNewsClient = _HackerNewsClient;
+        private readonly IHackerNewsClient hackerNewsClient = _hackerNewsClient;
         private readonly IMemoryCache cache = _cache;
         private readonly AppSettings appSettings = _options.Value;
 
         public async Task<List<Story>> GetBestStoriesAsync(int n = 5)
         {
-            var storyIds = await GetCacheStoryIdsAsync();
+            var storyIds = await GetBestStoryIdsAsync();
 
             var asyncTasks = new List<Task<Story>>();
 
@@ -28,12 +23,12 @@ namespace Application.Services
 
             var stories = tasksResult.ToList()
                 .OrderByDescending(story => story.score)
-                .Take(n);
+                .Take(n).ToList();
 
-            return [.. stories];
+            return stories;
         }
 
-        private async Task<List<int>> GetCacheStoryIdsAsync()
+        public async Task<List<int>> GetBestStoryIdsAsync()
         {
             if (cache.TryGetValue<List<int>>(appSettings.BestStoryIdsCacheName!, out var storyIds))
             {
