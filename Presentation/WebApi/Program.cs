@@ -1,9 +1,10 @@
 using Application.Services;
 using Application.UseCases;
+using Domain.Entities;
 using Domain.Interfaces.Clients;
 using Domain.Interfaces.Services;
 using Domain.Interfaces.UseCases;
-using Repositories;
+using Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +18,15 @@ builder.Services.AddSwaggerGen();
 // Dependency Injection
 builder.Services.AddScoped<IGetBestStoriesUseCase, GetBestStoriesUseCase>();
 builder.Services.AddScoped<IStoryService, StoryService>();
-builder.Services.AddScoped<IHackerNewsClient, HackerNewsClient>();
-builder.Services.AddScoped<HttpClient, HttpClient>();
+// builder.Services.AddScoped<IHackerNewsClient, HackerNewsClient>();
+// builder.Services.AddScoped<HttpClient, HttpClient>();
+
+builder.Services.AddHttpClient<IHackerNewsClient, HackerNewsClient>();
+builder.Services.AddMemoryCache();
+builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+builder.Services.AddOptions();
+
 
 var app = builder.Build();
 

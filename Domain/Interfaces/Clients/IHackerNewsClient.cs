@@ -8,8 +8,8 @@ namespace Domain.Interfaces.Clients
 {
     public interface IHackerNewsClient
     {
-        
-        Task<int[]> GetBestStoryIdsAsync();
+
+        Task<List<int>> GetBestStoryIdsAsync();
         Task<Story> GetStoryDetailsAsync(int storyId);
     }
 }

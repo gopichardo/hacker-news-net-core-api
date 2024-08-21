@@ -1,26 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Net.Http.Json;
 using Domain.Entities;
 using Domain.Interfaces.Clients;
 using Newtonsoft.Json;
 
-namespace Repositories
+namespace Infrastructure.Repositories
 {
     public class HackerNewsClient(HttpClient _httpClient) : IHackerNewsClient
     {
         private readonly HttpClient httpClient = _httpClient;
 
-        public async Task<int[]> GetBestStoryIdsAsync()
+
+
+        public async Task<List<int>> GetBestStoryIdsAsync()
         {
             var response = await httpClient.GetAsync("https://hacker-news.firebaseio.com/v0/beststories.json");
             response.EnsureSuccessStatusCode();
 
-            var content = await response.Content.ReadAsStringAsync();
-            var storiesId = JsonConvert.DeserializeObject<int[]>(content);
+            var storyIds = await response.Content.ReadFromJsonAsync<List<int>>();
 
-            return storiesId!;
+            return storyIds!;
         }
 
         public async Task<Story> GetStoryDetailsAsync(int storyId)
