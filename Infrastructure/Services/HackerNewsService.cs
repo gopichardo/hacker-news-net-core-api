@@ -5,11 +5,17 @@ using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Services
 {
-    public class HackerNewsService(IHackerNewsClient _hackerNewsClient, IMemoryCache _cache, IOptions<AppSettings> _options) : IHackerNewsService
+    public class HackerNewsService(
+        IHackerNewsClient _hackerNewsClient,
+        ICacheService _cacheService,
+        IOptions<AppSettings> _options,
+        ITimeConverter _timeConverter
+        ) : IHackerNewsService
     {
         private readonly IHackerNewsClient hackerNewsClient = _hackerNewsClient;
-        private readonly IMemoryCache cache = _cache;
+        private readonly ICacheService cacheService = _cacheService;
         private readonly AppSettings appSettings = _options.Value;
+        private readonly ITimeConverter timeConverter = _timeConverter;
 
         public async Task<List<Story>> GetBestStoriesAsync(int n = 5)
         {
@@ -28,16 +34,16 @@ namespace Infrastructure.Services
             return stories;
         }
 
-        public async Task<List<int>> GetBestStoryIdsAsync()
+        private async Task<List<int>> GetBestStoryIdsAsync()
         {
-            if (cache.TryGetValue<List<int>>(appSettings.BestStoryIdsCacheName!, out var storyIds))
+            if (cacheService.TryGetValue<List<int>>(appSettings.BestStoryIdsCacheName!, out var storyIds))
             {
                 return storyIds!;
             }
 
             storyIds = await hackerNewsClient.GetBestStoryIdsAsync();
 
-            SetCache<List<int>>(appSettings.BestStoryIdsCacheName!, storyIds);
+            cacheService.SetCache<List<int>>(appSettings.BestStoryIdsCacheName!, storyIds, appSettings.CacheExpirationTimeMinutes);
 
             return storyIds!;
         }
@@ -46,21 +52,26 @@ namespace Infrastructure.Services
         {
             var storyCacheName = $"story_{storyId}";
 
-            if (cache.TryGetValue<Story>(storyCacheName, out var story))
+            if (cacheService.TryGetValue<Story>(storyCacheName, out var story))
             {
                 return story!;
             }
-            story = await hackerNewsClient.GetStoryDetailsAsync(storyId);
 
-            SetCache<Story>(storyCacheName, story);
+            var storyRepositoryDto = await hackerNewsClient.GetStoryDetailsAsync(storyId);
+
+            story = new Story
+            {
+                title = storyRepositoryDto.title,
+                uri = storyRepositoryDto.uri,
+                postedBy = storyRepositoryDto.postedBy,
+                time = timeConverter.DateTimeToString(storyRepositoryDto.timeUnix),
+                score = storyRepositoryDto.score,
+                commentCount = storyRepositoryDto.kids?.Count ?? 0
+            };
+
+            cacheService.SetCache<Story>(storyCacheName, story, appSettings.CacheExpirationTimeMinutes);
 
             return story!;
-        }
-
-        private void SetCache<T>(string key, T items)
-        {
-            var expirationTime = DateTimeOffset.Now.AddMinutes(appSettings.CacheExpirationTimeMinutes);
-            cache.Set(key, items, expirationTime);
         }
     }
 }

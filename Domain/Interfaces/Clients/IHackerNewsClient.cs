@@ -10,6 +10,6 @@ namespace Domain.Interfaces.Clients
     {
 
         Task<List<int>> GetBestStoryIdsAsync();
-        Task<Story> GetStoryDetailsAsync(int storyId);
+        Task<StoryRepositoryDto> GetStoryDetailsAsync(int storyId);
     }
 }

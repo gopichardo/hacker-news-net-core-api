@@ -21,13 +21,13 @@ namespace Infrastructure.Repositories
             return storyIds!;
         }
 
-        public async Task<Story> GetStoryDetailsAsync(int storyId)
+        public async Task<StoryRepositoryDto> GetStoryDetailsAsync(int storyId)
         {
             var response = await httpClient.GetAsync($"https://hacker-news.firebaseio.com/v0/item/{storyId}.json");
             response.EnsureSuccessStatusCode();
 
             var content = await response.Content.ReadAsStringAsync();
-            var story = JsonConvert.DeserializeObject<Story>(content);
+            var story = JsonConvert.DeserializeObject<StoryRepositoryDto>(content);
 
             return story!;
         }

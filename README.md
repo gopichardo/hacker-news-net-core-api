@@ -82,7 +82,19 @@ The API uses `Microsoft.Extensions.Caching.Memory` to cache data from the Hacker
 - **Swagger**: Provides interactive documentation for the API.
 - **Microsoft.Extensions.Caching.Memory**: Used for in-memory caching.
 - **HttpClient**: Used to make requests to the Hacker News API.
-- **System.Text.Json** and **Newtonsoft.Json**: Used for JSON serialization and deserialization.
+- **Newtonsoft.Json**: Used for JSON serialization and deserialization.
+
+## Custom Settings
+- **BestStoryIdsCacheName**: Cache name for the list of best story IDs.
+- **CacheExpirationTimeMinutes**: Expiration time for cached data in minutes.
+- **DateFormat**: Date format
+```json
+{
+    "BestStoryIdsCacheName": "BestStoryIds",
+    "CacheExpirationTimeMinutes": 5,
+    "DateFormat": "yyyy-MM-ddTHH:mm:sszzz"
+  }
+```
 
 ## Contributing
 Contributions are welcome! Please open an issue or submit a pull request.

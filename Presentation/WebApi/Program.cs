@@ -17,9 +17,10 @@ builder.Services.AddSwaggerGen();
 // Dependency Injection
 builder.Services.AddScoped<IGetBestStoriesUseCase, GetBestStoriesUseCase>();
 builder.Services.AddScoped<IHackerNewsService, HackerNewsService>();
-
 builder.Services.AddHttpClient<IHackerNewsClient, HackerNewsClient>();
 builder.Services.AddMemoryCache();
+builder.Services.AddScoped<ITimeConverter, TimeConverter>();
+builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddOptions();
