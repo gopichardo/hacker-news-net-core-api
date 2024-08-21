@@ -28,7 +28,7 @@ This project provides a RESTful API to retrieve the top stories from Hacker News
 ### Best Stories
 **Method**: `GET`\
 **Path**: `/api/besthistories/{n}`\
-**Parameters**: `n` : (optional, integer, default: 5) The number of best stories to retrieve.\
+**Parameters**: `n` : (`optional`, `integer`, `default: 5`) The number of best stories to retrieve.\
 **Example**: `http://localhost:5164/api/besthistories/2`
 ```curl
 curl -X 'GET' \
@@ -85,13 +85,13 @@ The API uses `Microsoft.Extensions.Caching.Memory` to cache data from the Hacker
 - **Newtonsoft.Json**: Used for JSON serialization and deserialization.
 
 ## Custom Settings
-- **BestStoryIdsCacheName**: Cache name for the list of best story IDs.
-- **CacheExpirationTimeMinutes**: Expiration time for cached data in minutes.
-- **DateFormat**: Date format
+- **BestStoryIdsCacheName**: (`required`, `string`, `default: "BestStoryIds"`) Cache name for the list of best story IDs.
+- **CacheExpirationTimeMinutes**: (`required`, `double`, `default: 5.0`) Expiration time for cached data in minutes.
+- **DateFormat**: (`required`, `string`, `default: "yyyy-MM-ddTHH:mm:sszzz"`) Date format
 ```json
 {
     "BestStoryIdsCacheName": "BestStoryIds",
-    "CacheExpirationTimeMinutes": 5,
+    "CacheExpirationTimeMinutes": 5.0,
     "DateFormat": "yyyy-MM-ddTHH:mm:sszzz"
   }
 ```

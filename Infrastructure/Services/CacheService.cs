@@ -15,7 +15,7 @@ namespace Infrastructure.Services
             return cache.TryGetValue(key, out value!);
         }
 
-        public void SetCache<T>(string key, T value, int expirationMinutes)
+        public void SetCache<T>(string key, T value, double expirationMinutes)
         {
             var expirationTime = DateTimeOffset.Now.AddMinutes(expirationMinutes);
             cache.Set(key, value, expirationTime);

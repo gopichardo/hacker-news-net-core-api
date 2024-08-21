@@ -23,6 +23,6 @@ namespace Infrastructure.Services
         /// <param name="key">Key of the value</param>
         /// <param name="value">Value to set</param>
         /// <param name="expirationMinutes">Expiration time in minutes</param>
-        void SetCache<T>(string key, T value, int expirationMinutes);
+        void SetCache<T>(string key, T value, double expirationMinutes);
     }
 }
