@@ -54,7 +54,7 @@ The API uses `Microsoft.Extensions.Caching.Memory` to cache data from the Hacker
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/hacker-news-net-core-api.git
+   git clone https://github.com/gopichardo/hacker-news-net-core-api.git
 2. **Navigate to the project directory:**
    ```shell
    cd hacker-news-net-core-api
@@ -112,6 +112,4 @@ Contributions are welcome! Please open an issue or submit a pull request.
 This project is licensed under the MIT License.
 
 ## Author
-Mail: [gopichardoces@gmail.com](gopichardoces@gmail.com) \
-Linkedin: [gopichardoces](https://www.linkedin.com/in/gopichardoces/)\
-GitHub: [gopichardo](https://github.com/gopichardo)
+Mail: [gopichardoces@gmail.com](gopichardoces@gmail.com) | Linkedin: [gopichardoces](https://www.linkedin.com/in/gopichardoces/) | GitHub: [gopichardo](https://github.com/gopichardo)
