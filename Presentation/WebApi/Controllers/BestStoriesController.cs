@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("api/besthistories")]
+    [Route("api/beststories")]
     public class BestStoriesController : ControllerBase
     {
         private readonly IGetBestStoriesUseCase getBestStoriesUseCase;
