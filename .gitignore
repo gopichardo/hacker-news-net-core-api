@@ -107,3 +107,4 @@ $RECYCLE.BIN/
 .sonarlint/
 
 # End of https://www.toptal.com/developers/gitignore/api/sonarqube
+/.vscode/settings.json
