@@ -27,7 +27,7 @@ namespace Infrastructure.Services
 
             var tasksResult = await Task.WhenAll(asyncTasks);
 
-            var stories = tasksResult.ToList()
+            var stories = tasksResult
                 .OrderByDescending(story => story.score)
                 .Take(n).ToList();
 
